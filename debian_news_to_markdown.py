@@ -15,7 +15,7 @@ def read_debian_news_with_pandoc_and_write_to_markdown():
     reads online debian news and writes to markdown
     Should execute only when pandoc is found in system
     """
-    pandoc_cmd = "pandoc --from=html --to=markdown_strict https://wiki.debian.org/News -output=News-current.md"
+    pandoc_cmd = "pandoc --from=html --to=markdown_strict https://wiki.debian.org/News --output=News-current.md"
     write_to_markdown = subprocess.run(shlex.split(pandoc_cmd))
 
     if write_to_markdown.returncode != 0:
