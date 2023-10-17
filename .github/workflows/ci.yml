@@ -20,4 +20,4 @@ jobs:
         run: |
           sudo apt install pandoc
       - name: Run tests with unittest
-        run: python3 -u -m unittest test_debian_news_to_markdown.py
+        run: python3 -u -m unittest -v test_debian_news_to_markdown.py
