@@ -1,7 +1,13 @@
 """This script reads the debian news site found at https://wiki.debian.org/News and converts it to markdown with pandoc"""
 import subprocess
 import shlex
+import shutil
 
+def check_if_pandoc_is_installed(debian_news_links=None):
+    """Checks if pandoc is installed or else raises error"""
+    pandoc_sys_path = shutil.which('pandoc')
+    if pandoc_sys_path is None:
+        raise Exception("Pandoc not found. Please install Pandoc as per your system")
 
 def read_debian_news_with_pandoc_and_write_to_markdown():
     """
@@ -16,6 +22,7 @@ def read_debian_news_with_pandoc_and_write_to_markdown():
     print("Markdown file of the Debian News has been created. See the News-current.md file")
 
 def main():
+    check_if_pandoc_is_installed()
     read_debian_news_with_pandoc_and_write_to_markdown()
 
 if __name__ == "__main__":
