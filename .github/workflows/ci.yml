@@ -16,6 +16,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.11.2
+      - name: Install Python Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install ddt
       - name: Install Pandoc
         run: |
           sudo apt install pandoc
