@@ -1,0 +1,27 @@
+name: Run Python Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.2
+      - name: Install Python Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install ddt
+      - name: Install Pandoc
+        run: |
+          sudo apt install pandoc
+      - name: Run tests with unittest
+        run: python3 -u -m unittest -v test_debian_news_to_markdown.py
