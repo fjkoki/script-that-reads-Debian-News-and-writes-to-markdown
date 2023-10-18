@@ -25,7 +25,6 @@ def check_if_pandoc_is_installed(debian_news_links=None):
     pandoc_sys_path = shutil.which('pandoc')
     if pandoc_sys_path is None:
         raise Exception("Pandoc not found. Please install Pandoc as per your system")
-    read_debian_news_with_pandoc_and_write_to_markdown(debian_news_links)
 
 def read_debian_news_with_pandoc_and_write_to_markdown(debian_news_links=None):
     """
@@ -50,22 +49,30 @@ def read_debian_news_with_pandoc_and_write_to_markdown(debian_news_links=None):
                 print(error_message)
                 print(skip_message)
             else:
-                markdown_file_name = debian_news_link.split('/')[2] + "-" + debian_news_link.split('/')[3] + "-" + debian_news_link.split('/')[4]  + "-" + debian_news_link.split('/')[5] + ".md"
-                pandoc_cmd = f"pandoc --from=html --to=markdown_strict {debian_news_link} --output={markdown_file_name}"
-                write_to_markdown = subprocess.run(shlex.split(pandoc_cmd))
-
-                if write_to_markdown.returncode != 0:
-                    error_message = f"we could not convert {debian_news_link} to markdown"
-                    skip_message = f"we will skip {debian_news_link}. Check after you are done"
+                try:
+                    markdown_file_name = debian_news_link.split('/')[2] + "-" + debian_news_link.split('/')[3] + "-" + debian_news_link.split('/')[4]  + "-" + debian_news_link.split('/')[5] + ".md"
+                except IndexError:
+                    error_message = f"the link {debian_news_link} does not match expected format"
+                    skip_message = f"we will skip {debian_news_link}."
                     print(error_message)
                     print(skip_message)
-                print(f'successfully created {markdown_file_name} from {debian_news_link}')
+                else:
+                    pandoc_cmd = f"pandoc --from=html --to=markdown_strict {debian_news_link} --output={markdown_file_name}"
+                    write_to_markdown = subprocess.run(shlex.split(pandoc_cmd))
+
+                    if write_to_markdown.returncode != 0:
+                        error_message = f"we could not convert {debian_news_link} to markdown"
+                        skip_message = f"we will skip {debian_news_link}. Check after you are done"
+                        print(error_message)
+                        print(skip_message)
+                    print(f'successfully created {markdown_file_name} from {debian_news_link}')
         print("All done check current folder for all markdown files created")
 
 def main():
     """start program execution"""
-    custom_debian_news_list_of_links = number_of_links_parsed()
-    check_if_pandoc_is_installed(custom_debian_news_list_of_links)
+    check_if_pandoc_is_installed()
+    custom_debian_news_links = number_of_links_parsed()
+    read_debian_news_with_pandoc_and_write_to_markdown(custom_debian_news_links)
 
 if __name__ == "__main__":
     main()
