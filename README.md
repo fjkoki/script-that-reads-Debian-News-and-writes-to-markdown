@@ -6,6 +6,8 @@ It uses [Pandoc](https://pandoc.org/index.html) which is available on most Linux
 ## Installation and Usage
 
 To use this script:
+- ensure that Pandoc is installed in your system if not, install it as per the information [here](https://pandoc.org/installing.html).
+
 
 - clone this git repo using the command below:
 
